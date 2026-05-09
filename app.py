@@ -12,7 +12,10 @@ from langchain_core.output_parsers import StrOutputParser
 st.set_page_config(page_title="AI Perfume Bot", page_icon="✨")
 st.title("🤖 خبير العطور الذكي")
 st.markdown("مرحباً بك! اسألني عن أي عطر أو سعر.")
-
+with st.sidebar:
+    st.markdown("### About")
+    st.markdown("This bot uses RAG to answer queries about perfumes from a custom Arabic/English dataset.")
+    st.markdown("**Tech Stack:** Python, LangChain, Chroma, Groq LLaMA, Streamlit")
 # --- الدالات الأساسية ---
 def normalize_arabic(text):
     if not isinstance(text, str): return text
@@ -42,7 +45,11 @@ def load_bot():
     
     llm = ChatGroq(model_name="llama-3.3-70b-versatile", temperature=0.1)
     return vector_db.as_retriever(search_kwargs={"k": 5}), llm
-
+current_dir = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(current_dir, "chroma_db")
+if not os.path.exists(db_path):
+    st.error("Database not found. Please run ingest.py first.")
+    st.stop()
 retriever, llm = load_bot()
 
 template = """
@@ -80,4 +87,7 @@ if user_input := st.chat_input("كيف يمكنني مساعدتك اليوم؟"
         clean_input = normalize_arabic(user_input)
         response = rag_chain.invoke(clean_input)
         st.markdown(response)
+        docs = retriever.invoke(clean_input)
+        sources = [doc.metadata['source'] for doc in docs]
+        st.caption(f"📚 Sources: {', '.join(sources)}")
         st.session_state.messages.append({"role": "assistant", "content": response})

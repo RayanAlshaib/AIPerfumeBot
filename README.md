@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Perfume Assistant (RAG-Powered)
 
 An intelligent fragrance consultant that uses Large Language Models and Retrieval-Augmented Generation (RAG) to provide expert-level perfume recommendations and pricing info.
@@ -30,3 +31,25 @@ Clone the repository and install the required dependencies:
 git clone [https://github.com/RayanAlshaib/AIPerfumeBot.git](https://github.com/RayanAlshaib/AIPerfumeBot.git)
 cd AIPerfumeBot
 pip install -r requirements.txt
+=======
+---
+title: AIPerfumeBot
+emoji: 🚀
+colorFrom: red
+colorTo: red
+sdk: docker
+app_port: 8501
+tags:
+- streamlit
+pinned: false
+short_description: Streamlit template space
+license: mit
+---
+
+# Welcome to Streamlit!
+
+Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
+
+If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
+forums](https://discuss.streamlit.io).
+>>>>>>> 443b721c49be5e033a94294bd4abf650a9ed8c40

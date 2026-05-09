@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.5
 aiosignal==1.4.0
@@ -139,3 +140,8 @@ xxhash==3.6.0
 yarl==1.23.0
 zipp==3.23.1
 zstandard==0.25.0
+=======
+altair
+pandas
+streamlit
+>>>>>>> 443b721c49be5e033a94294bd4abf650a9ed8c40
