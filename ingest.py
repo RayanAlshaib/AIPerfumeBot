@@ -14,16 +14,16 @@ def normalize_arabic(text):
     text = re.sub(r"[\u064B-\u0652]", "", text)
     return text.strip()
 
-FILE_NAME = "sample_data.csv"  
+FILE_NAME = "sampla_data.csv"  
 DB_DIR = "./chroma_db"
 
 if os.path.exists(DB_DIR):
     try:
         shutil.rmtree(DB_DIR)
-        print("🗑️ تم تنظيف قاعدة البيانات القديمة.")
+        print("🗑️ The old database has been cleaned up")
     except Exception as e:
-        print(f"⚠️ لم أستطع مسح المجلد تلقائياً (ربما لأنه مفتوح): {e}")
-        print("💡 لا بأس، سنقوم بتحديث البيانات فوقها.")
+        print(f"⚠️I was unable to delete the folder automatically (probably because it was open): {e}")
+        print("💡 That's okay, we'll update the data over it.")
 
 df = pd.read_csv(FILE_NAME)
 
@@ -45,7 +45,7 @@ for _, row in df.iterrows():
     
     documents.append(Document(page_content=clean_content, metadata={"source": str(row['Name_EN'])}))
 
-print("🔄 جاري معالجة البيانات (Normalization & Embeddings)...")
+print("🔄 Data Processing in progress(Normalization & Embeddings)...")
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
 vector_db = Chroma.from_documents(
@@ -54,4 +54,4 @@ vector_db = Chroma.from_documents(
     persist_directory=DB_DIR
 )
 
-print(f"✅ تم بنجاح! تم فهرسة {len(documents)} عطر بنصوص موحدة.")
+print(f"✅Done Succesfully {len(documents)}")

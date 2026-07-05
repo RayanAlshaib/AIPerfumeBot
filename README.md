@@ -1,55 +1,38 @@
-<<<<<<< HEAD
-# AI Perfume Assistant (RAG-Powered)
+# AI Perfume Bot: State-Controlled B2B RAG Funnel ✨
 
-An intelligent fragrance consultant that uses Large Language Models and Retrieval-Augmented Generation (RAG) to provide expert-level perfume recommendations and pricing info.
+A production-ready conversational AI consultant engineered to guide wholesale clients through a structured B2B sales funnel. Unlike fragile, standard chat wrappers that easily get derailed, this application implements a custom state machine to handle multi-step conversational routing, inventory validation, and custom multi-tier wholesale pricing calculations without funnel loop regression.
 
-## 🎯 What it Does
-This chatbot acts as a virtual fragrance expert. Unlike a standard AI, it doesn't "hallucinate" prices or stock; it retrieves real data from a specific dataset.
-- Natural Language Understanding: Users can ask questions in English or Arabic .
-- Context-Aware Retrieval: It searches through a database of over 200 perfumes to find the closest matches.
-- Luxury Consulting: Provides structured details including brand history, and accurate pricing.
-
-## 💡 Why I Built It
-The fragrance industry is vast and often overwhelming for customers. I built this project to solve two main problems:
-1. Data Accuracy: Traditional LLMs often give outdated or incorrect prices for specific luxury goods. Using RAG ensures the bot stays grounded in real inventory data.
-2. Personalization at Scale: To demonstrate how AI can bridge the gap between a massive wholesale catalog and a personalized customer experience, providing a "high-end boutique" feel digitally.
-
-## 🏗️ System Architecture
-The project is built using a modern AI stack designed for speed and scalability:
-
+## 🛠️ Tech Stack
 - Orchestration: `LangChain` manages the flow between the user query, the database, and the AI model.
 - Vector Database: `ChromaDB` stores the perfume data as mathematical "embeddings," allowing for semantic search.
 - LLM: `Llama 3.3 70B` (via Groq API) serves as the reasoning engine for generating human-like responses.
 - Embedding Model: `HuggingFace` multilingual models ensure the bot understands both Arabic and English perfectly.
 - Frontend: `Streamlit` provides a clean, responsive web interface.
 
-## ⚙️ How to Run It
-
-### 1. Installation
-Clone the repository and install the required dependencies:
-```bash
-git clone [https://github.com/RayanAlshaib/AIPerfumeBot.git](https://github.com/RayanAlshaib/AIPerfumeBot.git)
-cd AIPerfumeBot
-pip install -r requirements.txt
-=======
----
-title: AIPerfumeBot
-emoji: 🚀
-colorFrom: red
-colorTo: red
-sdk: docker
-app_port: 8501
-tags:
-- streamlit
-pinned: false
-short_description: Streamlit template space
-license: mit
 ---
 
-# Welcome to Streamlit!
+## 🏗️ Architectural Core Wins (What I Solved)
 
-Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
+### 1. Eliminating Funnel Loop Regression (State Machine Integration)
+- The Problem: In multi-step sales funnels, LLMs frequently get confused by conversational side-tracks (e.g., a user asking for a quantity before selecting a brand, or changing their mind halfway through), causing standard models to reset the conversation or lose their position in the pipeline.
+- The Solution: I bound the LangChain RAG pipeline to a Python backend state controller (`st.session_state`). The LLM prompt is executed dynamically based on the active structural state (`discovery`, `gender_filter`, `quantity_lock`, `price_reveal`), guaranteeing a strict conversion path.
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
->>>>>>> 443b721c49be5e033a94294bd4abf650a9ed8c40
+### 2. Multi-Chain Intent Routing & Context Isolation
+- The Problem: Passing short, conversational user modifications (like "yes", "ok", or "1 kg and a half") directly into a standard vector database retriever pulls random, irrelevant document chunks, degrading the context window and corrupting the LLM's pricing calculations.
+- The Solution: I built an intent routing matrix in Python:
+  * Intent Route A (Pricing): Catches numerical and weight adjustments, bypassing broad vector searches to look up data strictly tied to the cached `chosen_perfume` inside the session state.
+  * Intent Route B (Catalog Check): Confirms real-time catalog matches, locking the specific product entity into memory so subsequent queries stay isolated to that data.
+
+### 3. Dynamic Text Normalization
+Integrated Arabic text preprocessing (`normalize_arabic`) using regex token parsing to harmonize standard text mutations (like Alef, Ta Marbuta, and Diacritics/Tashkeel). This ensures high-accuracy semantic vector matching across code-switched Arabic and English wholesale catalogs.
+
+> 🔒 **Data Privacy Note:** The production dataset and exact proprietary wholesale pricing matrices have been omitted from this public repository. A simulated product architecture (`sample_data.csv`) is provided to demonstrate the chunking, embedding, and multi-tier pricing calculation capabilities of the RAG pipeline.
+
+---
+
+## 🚀 How to Run Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/RayanAlshaib/AIPerfumeBot.git](https://github.com/RayanAlshaib/AIPerfumeBot.git)
+   cd AIPerfumeBot
